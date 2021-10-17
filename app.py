@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from security import authenticate, identity
 from resources.item import Item, ItemList
+from resources.store import Store, StoreList
 from resources.user import Register, UserResource
 
 app = Flask(__name__)
@@ -38,6 +39,9 @@ def customized_response_handler(access_token, identity):
 
 api.add_resource(Item, "/items/<string:name>/")
 api.add_resource(ItemList, "/items/")
+
+api.add_resource(Store, "/stores/<string:name>/")
+api.add_resource(StoreList, "/stores/")
 
 api.add_resource(Register, "/register/")
 api.add_resource(UserResource, "/me/")

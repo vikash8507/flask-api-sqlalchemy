@@ -11,6 +11,12 @@ class Item(Resource):
         required=True,
         help="Price required"
     )
+    parser.add_argument(
+        "store_id",
+        type=int,
+        required=True,
+        help="Every item needs to have a store id"
+    )
 
     def get(self, name):
         item = ItemModel.find_by_name(name)
@@ -25,7 +31,7 @@ class Item(Resource):
             return {'message': "An item with this name is already exist."}, 400
         
         data = Item.parser.parse_args()
-        item = ItemModel(name, data['price'])
+        item = ItemModel(name, **data)
         
         try:
             item.save_to_db()
@@ -49,8 +55,9 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
         if item:
             item.price = data['price']
+            item.store_id = data['store_id']
         else:
-            item = ItemModel(name, data['price'])
+            item = ItemModel(name, **data)
 
         item.save_to_db()
         return item.json(), 200
